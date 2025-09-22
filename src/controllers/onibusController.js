@@ -88,6 +88,21 @@ const updateOnibus = (req, res) => {
 
   const idParaEdit = id;
 
+  //regras de negócio
+  if (tarifa < 0) {
+    res.status(400).json({
+      sucess: false,
+      message: "o campo 'tarifa' não pode ser menor que 0",
+    });
+  }
+  if (destino.toLowerCase() === origem.toLowerCase()) {
+    res.status(400).json({
+      success: false,
+      message: "os campos 'origem' e 'destino' não podem ser iguais",
+    });
+  }
+  
+
   if (isNaN(idParaEdit)) {
     return res.status(400).json({
       success: false,
