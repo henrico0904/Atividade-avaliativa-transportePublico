@@ -12,9 +12,9 @@ const getAll = (req, res) => {
 
 const getByID = (req, res) => {
   let id = parseInt(req.params.id);
-  const onibu = onibus.find((o) => o.id === id); //deixei ""onibu" escrito porque ele no singular é plural e tava dando conflito
+  const o = onibus.find((o) => o.id === id);
 
-  if (onibu) {
+  if (o) {
     res.status(200).json({
       sucess: true,
       onibus: onibu,
@@ -28,6 +28,20 @@ const getByID = (req, res) => {
 
 const createOnibus = (req, res) => {
   const { linha, origem, destino, horario, tarifa, veiculo, status } = req.body;
+
+  //regras de negócio
+  if (tarifa < 0) {
+    res.status(400).json({
+      sucess: false,
+      message: "o campo 'tarifa' não pode ser menor que 0",
+    });
+  }
+  if (destino.toLowerCase() === origem.toLowerCase()) {
+    res.status(400).json({
+      success: false,
+      message: "os campos 'origem' e 'destino' não podem ser iguais",
+    });
+  }
 
   const novoOnibus = {
     id: onibus.length + 1,
