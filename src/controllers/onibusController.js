@@ -48,10 +48,31 @@ const createOnibus = (req, res) => {
     })
 }
 
+const deletaOnibus = (req, res) =>{
+    let id = parseInt(req.params.id)
+    const onibusParaDeletar = onibus.find(o => o.id === id)
+
+    if(!onibusParaDeletar){
+        return res.status(400).json({
+            sucess: false,
+            message: "Esse onibus não existe"
+        })
+    }
+    const onibusFiltrado = onibus.filter(o => o.id !==id)
+    onibus.splice(0, onibus.length, ...onibusFiltrado)
+
+    res.status(200).json({
+        sucess: true,
+        message: "onibus excluido com sucesso",
+        onibusDeletado: onibusParaDeletar
+    })
+}
 
 
 
 
 
 
-export {getAll, getByID, createOnibus}
+
+
+export {getAll, getByID, createOnibus, deletaOnibus}
